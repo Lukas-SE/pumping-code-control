@@ -18,5 +18,7 @@ O Controle de Pontos de Campeonato é uma aplicação desenvolvida para auxiliar
 ## Contribuição
 Se você deseja contribuir para o desenvolvimento deste projeto, sinta-se à vontade para abrir um *pull request* ou reportar problemas (*issues*) no [repositório oficial](https://github.com/joserenanfaria/pumping-code-control/).
 
+## Licença
+Este projeto é licenciado sob os termos da Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para obter mais informações.
 ---
 Divirta-se gerenciando seus campeonatos!
