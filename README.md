@@ -16,7 +16,7 @@ O Controle de Pontos de Campeonato é uma aplicação desenvolvida para auxiliar
 - Interface Intuitiva: Uma interface de usuário amigável torna a entrada de dados e o acompanhamento do campeonato simples e eficaz.
 
 ## Contribuição
-Se você deseja contribuir para o desenvolvimento deste projeto, sinta-se à vontade para abrir um *pull request* ou reportar problemas (*issues*) no [repositório oficial](https://github.com/joserenanfaria/pumping-code-controll/).
+Se você deseja contribuir para o desenvolvimento deste projeto, sinta-se à vontade para abrir um *pull request* ou reportar problemas (*issues*) no [repositório oficial](https://github.com/joserenanfaria/pumping-code-control/).
 
 ---
 Divirta-se gerenciando seus campeonatos!
