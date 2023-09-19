@@ -20,5 +20,7 @@ Se você deseja contribuir para o desenvolvimento deste projeto, sinta-se à von
 
 ## Licença
 Este projeto é licenciado sob os termos da Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para obter mais informações.
+
 ---
+
 Divirta-se gerenciando seus campeonatos!
