@@ -37,9 +37,9 @@ public class PlayerController : ApiController
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdatePlayerPoints(Guid id, decimal amount, [FromQuery] ActionsForPoints action)
+    public async Task<IActionResult> UpdatePlayerPoints(Guid id, UpdatePoints amount, [FromQuery] ActionsForPoints action)
     {
-        var command = new UpdatePlayerPointsCommand(id, amount, action);
+        var command = new UpdatePlayerPointsCommand(id, amount.amount, action);
         var commandResult = await _mediator.Send(command);
 
         return commandResult.IsError ? BadRequest(commandResult.Errors) : Ok(commandResult.Value);

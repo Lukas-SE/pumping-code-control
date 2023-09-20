@@ -42,9 +42,9 @@ public class UpdatePlayerPointsCommandHandler : IRequestHandler<UpdatePlayerPoin
         return request.Action switch
         {
             ActionsForPoints.AddPoints => balance + request.Points > decimal.MaxValue
-                                        ? decimal.MaxValue : balance += request.Points,
+                ? decimal.MaxValue : balance += request.Points,
             ActionsForPoints.SubtractPoints => balance - request.Points < 0 
-                                        ? 0 : balance -= request.Points,
+                ? 0 : balance -= request.Points,
             ActionsForPoints.SetPoints => request.Points,
             _ => throw new InvalidEnumArgumentException()
         };

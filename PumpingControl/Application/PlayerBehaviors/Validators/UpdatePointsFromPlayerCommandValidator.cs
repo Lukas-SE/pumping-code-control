@@ -11,6 +11,7 @@ public class UpdatePointsFromPlayerCommandValidator : AbstractValidator<UpdatePl
             .NotEmpty();
 
         RuleFor(x => x.Points)
-            .GreaterThan(0);
+            .GreaterThan(0)
+            .LessThanOrEqualTo(decimal.MaxValue);
     }
 }
