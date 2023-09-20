@@ -2,12 +2,7 @@
 
 namespace PumpingControl.Data.Repositories;
 
-public interface INationRepository
+public interface INationRepository: IRepository<Nation>
 {
-    Task<Nation?> GetByIdAsync(Guid id);
-    Task AddAsync(Nation player);
-    Task UpdateAsync(Nation player);
-    Task DeleteAsync(Nation player);
-    Task<List<Nation>?> GetAllAsync();
     Task<Nation?> GetByNameAsync(string name);
 }

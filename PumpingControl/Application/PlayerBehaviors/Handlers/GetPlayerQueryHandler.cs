@@ -19,8 +19,7 @@ public class GetPlayerQueryHandler : IRequestHandler<GetPlayerQuery, ErrorOr<Pla
     {
         var player = await _playerRepository.GetByIdAsync(request.Id);
 
-        if (player is null)
-            return Error.NotFound();
+        if (player is null) return Error.NotFound();
 
         return player;
     }
