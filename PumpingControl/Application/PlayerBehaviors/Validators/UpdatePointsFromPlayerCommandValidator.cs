@@ -3,9 +3,9 @@ using PumpingControl.Application.PlayerBehaviors.Commands;
 
 namespace PumpingControl.Application.PlayerBehaviors.Validators;
 
-public class AddPointsFromPlayerCommandValidator : AbstractValidator<AddPointsForPlayerCommand>
+public class UpdatePointsFromPlayerCommandValidator : AbstractValidator<UpdatePlayerPointsCommand>
 {
-    public AddPointsFromPlayerCommandValidator()
+    public UpdatePointsFromPlayerCommandValidator()
     {
         RuleFor(x => x.PlayerId)
             .NotEmpty();

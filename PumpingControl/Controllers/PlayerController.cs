@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PumpingControl.Application.Common.Enums;
 using PumpingControl.Application.PlayerBehaviors.Commands;
 using PumpingControl.Application.PlayerBehaviors.Contracts;
 using PumpingControl.Application.PlayerBehaviors.Queries;
@@ -36,12 +37,12 @@ public class PlayerController : ApiController
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> AddPointsForPlayer(Guid id, decimal pointsToAdd)
+    public async Task<IActionResult> UpdatePlayerPoints(Guid id, decimal amount, [FromQuery] ActionsForPoints action)
     {
-        var command = new AddPointsForPlayerCommand(id, pointsToAdd);
+        var command = new UpdatePlayerPointsCommand(id, amount, action);
         var commandResult = await _mediator.Send(command);
 
-        return commandResult.IsError ? Problem(commandResult.Errors) : NoContent();
+        return commandResult.IsError ? BadRequest(commandResult.Errors) : Ok(commandResult.Value);
     }
 
     [HttpPost]
