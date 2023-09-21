@@ -22,7 +22,7 @@ public class GetAllNationsQueryHandler : IRequestHandler<GetAllNationsQuery, Err
     {
         try
         {
-            var nations = await _nationRepository.GetAllAsync("Players");
+            var nations = await _nationRepository.GetAllAsync();
 
             if (nations is null) return Error.Unexpected();
 
@@ -33,9 +33,9 @@ public class GetAllNationsQueryHandler : IRequestHandler<GetAllNationsQuery, Err
 
             return response;
         }
-        catch (InvalidEnumArgumentException)
+        catch (Exception ex)
         {
-            return Error.Unexpected();
+            return Error.Unexpected(ex.GetType().Name, ex.Message);
         }
 
     }

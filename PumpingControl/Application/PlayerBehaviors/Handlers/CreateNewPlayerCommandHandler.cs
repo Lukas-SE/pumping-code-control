@@ -33,7 +33,6 @@ public class CreateNewPlayerCommandHandler : IRequestHandler<CreateNewPlayerComm
         
         var player = new Domain.Player
         {
-            Id = Guid.NewGuid(),
             Name = request.Name,
             Email = request.Email,
             BusinessUnit = request.BusinessUnit,
@@ -51,7 +50,8 @@ public class CreateNewPlayerCommandHandler : IRequestHandler<CreateNewPlayerComm
         }
 
         return new PlayerResult(
-            player.Id, player.Name,
+            player.Id,
+            player.Name,
             player.Email,
             player.BusinessUnit,
             player.Balance,

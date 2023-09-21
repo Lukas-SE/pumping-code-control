@@ -2,7 +2,6 @@
 using MediatR;
 using PumpingControl.Application.Common.Enums;
 using PumpingControl.Application.PlayerBehaviors.Results;
-using PumpingControl.Domain;
 
 namespace PumpingControl.Application.PlayerBehaviors.Commands;
 

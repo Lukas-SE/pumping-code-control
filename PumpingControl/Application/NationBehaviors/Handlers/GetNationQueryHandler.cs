@@ -17,7 +17,7 @@ public class GetNationQueryHandler : IRequestHandler<GetNationQuery, ErrorOr<Nat
 
     public async Task<ErrorOr<NationResult>> Handle(GetNationQuery request, CancellationToken cancellationToken)
     {
-        var nation = await _nationRepository.GetByIdAsync(request.Id, "Players");
+        var nation = await _nationRepository.GetByIdAsync(request.Id);
 
         if (nation is null) 
             return Error.NotFound();

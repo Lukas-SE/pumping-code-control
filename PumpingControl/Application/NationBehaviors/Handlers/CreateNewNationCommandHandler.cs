@@ -25,7 +25,6 @@ public class CreateNewNationCommandHandler : IRequestHandler<CreateNewNationComm
         
         var newNation = new Nation
         {
-            Id = Guid.NewGuid(),
             Name = request.Name
         };
 
