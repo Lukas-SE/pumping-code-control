@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using PumpingControl.Data.Core;
+using PumpingControl.Domain;
 
 namespace PumpingControl.Data.Repositories;
 
 public abstract class Repository<T> : IRepository<T>
-    where T : class
+    where T : Entity
 {
     protected readonly ApplicationContext _applicationContext;
     protected readonly DbSet<T> _dbSet;
@@ -15,14 +16,21 @@ public abstract class Repository<T> : IRepository<T>
         _dbSet = _applicationContext.Set<T>();
     }
 
-    public async Task<T?> GetByIdAsync(Guid id)
+    public async Task<T?> GetByIdAsync(Guid id, params string[] include)
     {
-        return await _dbSet.FindAsync(id);
+        IQueryable<T> query = _dbSet.AsQueryable();
+        if(include.Any())
+            foreach(var item in include) query = query.Include(item);
+        
+        return await query.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<T>?> GetAllAsync()
+    public async Task<List<T>?> GetAllAsync(params string[] include)
     {
-        return await _dbSet.ToListAsync();
+        IQueryable<T> query = _dbSet.AsQueryable();
+        if(include.Any())
+            foreach(var item in include) query = query.Include(item);
+        return await query.ToListAsync();
     }
 
     public async Task AddAsync(T player)

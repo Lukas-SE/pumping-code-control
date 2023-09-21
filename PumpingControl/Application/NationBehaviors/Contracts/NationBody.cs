@@ -1,3 +1,3 @@
 ﻿namespace PumpingControl.Application.NationBehaviors.Contracts;
 
-public record NationBody(string Name);
+public record NationRequest(string Name);

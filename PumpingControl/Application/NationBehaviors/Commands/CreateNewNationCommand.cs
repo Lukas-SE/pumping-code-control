@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 using MediatR;
-using PumpingControl.Domain;
+using PumpingControl.Application.NationBehaviors.Results;
 
 namespace PumpingControl.Application.NationBehaviors.Commands;
 
-public record CreateNewNationCommand(string Name) : IRequest<ErrorOr<Nation>>;
+public record CreateNewNationCommand(string Name) : IRequest<ErrorOr<NationResult>>;

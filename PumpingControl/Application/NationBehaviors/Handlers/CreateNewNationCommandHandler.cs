@@ -1,12 +1,13 @@
 ﻿using ErrorOr;
 using MediatR;
 using PumpingControl.Application.NationBehaviors.Commands;
+using PumpingControl.Application.NationBehaviors.Results;
 using PumpingControl.Data.Repositories;
 using PumpingControl.Domain;
 
 namespace PumpingControl.Application.NationBehaviors.Handlers;
 
-public class CreateNewNationCommandHandler : IRequestHandler<CreateNewNationCommand, ErrorOr<Nation>>
+public class CreateNewNationCommandHandler : IRequestHandler<CreateNewNationCommand, ErrorOr<NationResult>>
 {
     private readonly INationRepository _nationRepository;
 
@@ -15,7 +16,7 @@ public class CreateNewNationCommandHandler : IRequestHandler<CreateNewNationComm
         _nationRepository = nationRepository;
     }
 
-    public async Task<ErrorOr<Nation>> Handle(CreateNewNationCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<NationResult>> Handle(CreateNewNationCommand request, CancellationToken cancellationToken)
     {
         var existentNation = await _nationRepository.GetByNameAsync(request.Name);
 
@@ -37,6 +38,6 @@ public class CreateNewNationCommandHandler : IRequestHandler<CreateNewNationComm
             return Error.Failure(e.Message);
         }
 
-        return newNation;
+        return new NationResult(newNation.Id, newNation.Name, 0);
     }
 }

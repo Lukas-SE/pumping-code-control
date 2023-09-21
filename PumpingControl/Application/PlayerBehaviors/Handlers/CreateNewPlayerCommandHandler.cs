@@ -1,12 +1,12 @@
 ﻿using ErrorOr;
 using MediatR;
 using PumpingControl.Application.PlayerBehaviors.Commands;
+using PumpingControl.Application.PlayerBehaviors.Results;
 using PumpingControl.Data.Repositories;
-using PumpingControl.Domain;
 
 namespace PumpingControl.Application.PlayerBehaviors.Handlers;
 
-public class CreateNewPlayerCommandHandler : IRequestHandler<CreateNewPlayerCommand, ErrorOr<Player>>
+public class CreateNewPlayerCommandHandler : IRequestHandler<CreateNewPlayerCommand, ErrorOr<PlayerResult>>
 {
     private readonly IPlayerRepository _playerRepository;
     private readonly INationRepository _nationRepository;
@@ -19,7 +19,7 @@ public class CreateNewPlayerCommandHandler : IRequestHandler<CreateNewPlayerComm
         _nationRepository = nationRepository;
     }
 
-    public async Task<ErrorOr<Player>> Handle(CreateNewPlayerCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<PlayerResult>> Handle(CreateNewPlayerCommand request, CancellationToken cancellationToken)
     {
         var existentPlayer = await _playerRepository.GetByEmailAsync(request.Email);
 
@@ -31,7 +31,7 @@ public class CreateNewPlayerCommandHandler : IRequestHandler<CreateNewPlayerComm
         if (existentNation is null)
             return Error.NotFound(description: $"Nation {request.NationId} not found");        
         
-        var player = new Player
+        var player = new Domain.Player
         {
             Id = Guid.NewGuid(),
             Name = request.Name,
@@ -50,6 +50,12 @@ public class CreateNewPlayerCommandHandler : IRequestHandler<CreateNewPlayerComm
             return Error.Failure(e.Message);
         }
 
-        return player;
+        return new PlayerResult(
+            player.Id, player.Name,
+            player.Email,
+            player.BusinessUnit,
+            player.Balance,
+            existentNation.Id
+        );
     }
 }

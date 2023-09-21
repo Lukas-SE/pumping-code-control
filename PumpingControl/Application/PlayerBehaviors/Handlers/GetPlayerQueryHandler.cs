@@ -1,12 +1,12 @@
 ﻿using ErrorOr;
 using MediatR;
 using PumpingControl.Application.PlayerBehaviors.Queries;
+using PumpingControl.Application.PlayerBehaviors.Results;
 using PumpingControl.Data.Repositories;
-using PumpingControl.Domain;
 
 namespace PumpingControl.Application.PlayerBehaviors.Handlers;
 
-public class GetPlayerQueryHandler : IRequestHandler<GetPlayerQuery, ErrorOr<Player>>
+public class GetPlayerQueryHandler : IRequestHandler<GetPlayerQuery, ErrorOr<PlayerResult>>
 {
     private readonly IPlayerRepository _playerRepository;
 
@@ -15,12 +15,19 @@ public class GetPlayerQueryHandler : IRequestHandler<GetPlayerQuery, ErrorOr<Pla
         _playerRepository = playerRepository;
     }
 
-    public async Task<ErrorOr<Player>> Handle(GetPlayerQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<PlayerResult>> Handle(GetPlayerQuery request, CancellationToken cancellationToken)
     {
         var player = await _playerRepository.GetByIdAsync(request.Id);
 
         if (player is null) return Error.NotFound();
 
-        return player;
+        return new PlayerResult(
+            player.Id,
+            player.Name,
+            player.Email,
+            player.BusinessUnit,
+            player.Balance,
+            player.NationId
+        );
     }
 }

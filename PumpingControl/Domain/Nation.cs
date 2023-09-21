@@ -2,7 +2,7 @@
 
 namespace PumpingControl.Domain;
 
-public class Nation
+public class Nation : Entity
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
