@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PumpingControl.Application.Common.Enums;
+using PumpingControl.Application.NationBehaviors.Contracts;
 using PumpingControl.Application.PlayerBehaviors.Commands;
 using PumpingControl.Application.PlayerBehaviors.Contracts;
 using PumpingControl.Application.PlayerBehaviors.Queries;
@@ -19,12 +20,12 @@ public class PlayerController : ApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllPlayers()
+    public async Task<IActionResult> GetAllPlayers([FromQuery]OrderByParameter? orderBy = null)
     {
-        var query = new GetAllPlayersQuery();
+        var query = new GetAllPlayersQuery(orderBy);
         var queryResult = await _mediator.Send(query);
 
-        return queryResult.IsError ? Problem(queryResult.Errors) : Ok(queryResult.Value.Players);
+        return queryResult.IsError ? Problem(queryResult.Errors) : Ok(queryResult.Value);
     }
 
     [HttpGet("{id:guid}")]
@@ -37,16 +38,16 @@ public class PlayerController : ApiController
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdatePlayerPoints(Guid id, UpdatePoints amount, [FromQuery] ActionsForPoints action)
+    public async Task<IActionResult> UpdatePlayerPoints(Guid id, UpdatePointsRequest update)
     {
-        var command = new UpdatePlayerPointsCommand(id, amount.amount, action);
+        var command = new UpdatePlayerPointsCommand(id, update.Amount, update.Action);
         var commandResult = await _mediator.Send(command);
 
         return commandResult.IsError ? BadRequest(commandResult.Errors) : Ok(commandResult.Value);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateNewPlayer(PlayerBody playerBody)
+    public async Task<IActionResult> CreateNewPlayer(PlayerRequest playerBody)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

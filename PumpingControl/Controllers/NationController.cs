@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PumpingControl.Application.Common.Enums;
 using PumpingControl.Application.NationBehaviors.Commands;
 using PumpingControl.Application.NationBehaviors.Contracts;
 using PumpingControl.Application.NationBehaviors.Queries;
@@ -18,12 +19,12 @@ public class NationController : ApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllNations()
+    public async Task<IActionResult> GetAllNations([FromQuery]OrderByParameter? orderBy = null)
     {
-        var query = new GetAllNationsQuery();
+        var query = new GetAllNationsQuery(orderBy);
         var queryResult = await _mediator.Send(query);
 
-        return queryResult.IsError ? Problem(queryResult.Errors) : Ok(queryResult.Value.Nations);
+        return queryResult.IsError ? Problem(queryResult.Errors) : Ok(queryResult.Value);
     }
 
     [HttpGet("{id:guid}")]
@@ -36,7 +37,7 @@ public class NationController : ApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateNewNation(NationBody body)
+    public async Task<IActionResult> CreateNewNation(NationRequest body)
     {
         var command = new CreateNewNationCommand(body.Name);
         var commandResult = await _mediator.Send(command);

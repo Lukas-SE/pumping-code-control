@@ -1,45 +1,63 @@
 using Microsoft.EntityFrameworkCore;
 using PumpingControl.Data.Core;
+using PumpingControl.Domain;
 
 namespace PumpingControl.Data.Repositories;
 
 public abstract class Repository<T> : IRepository<T>
-    where T : class
+    where T : Entity
 {
-    protected readonly ApplicationContext _applicationContext;
+    protected readonly ApplicationContext _dbContext;
     protected readonly DbSet<T> _dbSet;
 
     public Repository(ApplicationContext applicationContext)
     {
-        _applicationContext = applicationContext;
-        _dbSet = _applicationContext.Set<T>();
+        _dbContext = applicationContext;
+        _dbSet = _dbContext.Set<T>();
+    }
+
+    private IQueryable<T> IncludeNavigations()
+    {
+        var query = _dbSet.AsQueryable();
+
+        var navigations = _dbContext.Model.FindEntityType(typeof(T))!
+            .GetNavigations()
+            .ToList();
+
+        foreach (var item in navigations) query = query.Include(item.Name);
+
+        return query;
     }
 
     public async Task<T?> GetByIdAsync(Guid id)
     {
-        return await _dbSet.FindAsync(id);
+        var query = IncludeNavigations();
+
+        return await query.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<List<T>?> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
+        var query = IncludeNavigations();
+
+        return await query.ToListAsync();
     }
 
-    public async Task AddAsync(T player)
+    public async Task AddAsync(T entity)
     {
-        await _dbSet.AddAsync(player);
-        await _applicationContext.SaveChangesAsync();
+        await _dbSet.AddAsync(entity);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(T player)
+    public async Task UpdateAsync(T entity)
     {
-        _dbSet.Update(player);
-        await _applicationContext.SaveChangesAsync();
+        _dbSet.Update(entity);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(T player)
+    public async Task DeleteAsync(T entity)
     {
-        _dbSet.Remove(player);
-        await _applicationContext.SaveChangesAsync();
+        _dbSet.Remove(entity);
+        await _dbContext.SaveChangesAsync();
     }
 }

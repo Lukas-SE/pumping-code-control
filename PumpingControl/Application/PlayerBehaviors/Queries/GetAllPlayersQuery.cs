@@ -1,7 +1,8 @@
 ﻿using ErrorOr;
 using MediatR;
+using PumpingControl.Application.Common.Enums;
 using PumpingControl.Application.PlayerBehaviors.Results;
 
 namespace PumpingControl.Application.PlayerBehaviors.Queries;
 
-public record GetAllPlayersQuery : IRequest<ErrorOr<GetAllPlayersResult>>;
+public record GetAllPlayersQuery(OrderByParameter? Parameter) : IRequest<ErrorOr<List<PlayerResult>>>;

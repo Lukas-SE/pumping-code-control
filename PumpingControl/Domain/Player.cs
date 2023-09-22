@@ -2,9 +2,8 @@
 
 namespace PumpingControl.Domain;
 
-public class Player
+public class Player : Entity
 {
-    public Guid Id { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
     public string BusinessUnit { get; set; }

@@ -17,6 +17,7 @@ public class CreateNewPlayerCommandValidator : AbstractValidator<CreateNewPlayer
             .NotEmpty();
 
         RuleFor(x => x.InitialBalance)
-            .GreaterThanOrEqualTo(0);
+            .GreaterThanOrEqualTo(0)
+            .LessThanOrEqualTo(decimal.MaxValue);
     }
 }
